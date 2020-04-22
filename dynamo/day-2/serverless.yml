@@ -1,0 +1,106 @@
+service:
+  name: dynamo-kinesis-stream
+
+plugins:
+  - serverless-webpack
+  - serverless-pseudo-parameters
+
+package:
+  exclude:
+    - node_modules/**
+
+provider:
+  name: aws
+  runtime: nodejs8.10
+  logRetentionInDays: 1
+
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - kinesis:Get*
+        - kinesis:DescribeStream
+        - kinesis:PutRecord
+        - kinesis:PutRecords
+      Resource:
+        Fn::GetAtt:
+          - ExampleKinesisStream
+          - Arn
+    - Effect: "Allow"
+      Action:
+        - "dynamodb:GetRecords"
+        - "dynamodb:GetShardIterator"
+        - "dynamodb:DescribeStream"
+        - "dynamodb:ListStreams"
+        - "dynamodb:PutItem"
+        - "dynamodb:UpdateItem"
+        - "dynamodb:GetItem"
+        - "dynamodb:Scan"
+        - "dynamodb:Query"
+      Resource:
+        Fn::GetAtt:
+          - SensorDataTable
+          - Arn
+
+
+functions:
+  ProcessKinesisRecords:
+    handler: src/handler.kinesisHandler
+    events:
+      - stream:
+          type: kinesis
+          arn:
+            Fn::GetAtt:
+              - ExampleKinesisStream
+              - Arn
+    environment:
+      SENSOR_TABLE:
+        Ref: SensorDataTable
+
+resources:
+  Resources:
+    ExampleKinesisStream:
+      Type: AWS::Kinesis::Stream
+      Properties:
+        Name: example-kinesis-stream-${opt:stage, self:custom.stage}
+        RetentionPeriodHours: 24
+        ShardCount: 1
+
+    SensorDataTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+          TableName: sensor-data-${opt:stage, self:custom.stage}
+          AttributeDefinitions:
+            -
+              AttributeName: SensorId
+              AttributeType: S
+            -
+              AttributeName: CurrentTime
+              AttributeType: N
+            -
+              AttributeName: Temperature
+              AttributeType: N
+          KeySchema:
+            -
+              AttributeName: SensorId
+              KeyType: HASH
+            -
+              AttributeName: CurrentTime
+              KeyType: RANGE
+          LocalSecondaryIndexes:
+            -
+              IndexName: TemperatureIndex
+              KeySchema:
+                  -
+                    AttributeName: SensorId
+                    KeyType: HASH
+                  -
+                    AttributeName: Temperature
+                    KeyType: RANGE
+              Projection:
+                ProjectionType: ALL
+          ProvisionedThroughput:
+            ReadCapacityUnits: 2
+            WriteCapacityUnits: 2
+
+custom:
+  stage: dev

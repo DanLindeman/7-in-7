@@ -1,0 +1,84 @@
+version: '3.1'
+
+networks:
+  neo4j:
+
+services:
+  neo4j1:
+    image: neo4j:3.4.5-enterprise
+    networks:
+      - neo4j
+    environment:
+      - "NEO4J_AUTH=none"
+      - "NEO4J_dbms_mode=HA"
+      - "NEO4J_ha_server__id=1"
+      - "NEO4J_ha_host_coordination=neo4j1:5001"
+      - "NEO4J_ha_host_data=neo4j1:6001"
+      - "NEO4J_ha_initial__hosts=neo4j1:5001,neo4j2:5001,neo4j3:5001,neo4j4:5001"
+      - "NEO4J_ACCEPT_LICENSE_AGREEMENT=yes"
+    ports:
+      - 7474:7474
+      - 7687:7687
+    volumes:
+      - neo4j1vol:/data
+
+  neo4j2:
+    image: neo4j:3.4.5-enterprise
+    networks:
+      - neo4j
+    environment:
+      - "NEO4J_AUTH=none"
+      - "NEO4J_dbms_mode=HA"
+      - "NEO4J_ha_server__id=2"
+      - "NEO4J_ha_host_coordination=neo4j2:5001"
+      - "NEO4J_ha_host_data=neo4j2:6001"
+      - "NEO4J_ha_initial__hosts=neo4j1:5001,neo4j2:5001,neo4j3:5001,neo4j4:5001"
+      - "NEO4J_ACCEPT_LICENSE_AGREEMENT=yes"
+        #ports:
+        #  - 7474:7474
+        #  - 7687:7687
+    volumes:
+      - neo4j2vol:/data
+
+  neo4j3:
+    image: neo4j:3.4.5-enterprise
+    networks:
+      - neo4j
+    environment:
+      - "NEO4J_AUTH=none"
+      - "NEO4J_dbms_mode=HA"
+      - "NEO4J_ha_server__id=3"
+      - "NEO4J_ha_host_coordination=neo4j3:5001"
+      - "NEO4J_ha_host_data=neo4j3:6001"
+      - "NEO4J_ha_initial__hosts=neo4j1:5001,neo4j2:5001,neo4j3:5001,neo4j4:5001"
+      - "NEO4J_ACCEPT_LICENSE_AGREEMENT=yes"
+        #ports:
+        #  - 7474:7474
+        #  - 7687:7687
+    volumes:
+      - neo4j3vol:/data
+
+  neo4j4:
+    image: neo4j:3.4.5-enterprise
+    networks:
+      - neo4j
+    environment:
+      - "NEO4J_AUTH=none"
+      - "NEO4J_dbms_mode=HA"
+      - "NEO4J_ha_server__id=4"
+      - "NEO4J_ha_host_coordination=neo4j4:5001"
+      - "NEO4J_ha_host_data=neo4j4:6001"
+      - "NEO4J_ha_initial__hosts=neo4j1:5001,neo4j2:5001,neo4j3:5001,neo4j4:5001"
+      - "NEO4J_ACCEPT_LICENSE_AGREEMENT=yes"
+        #ports:
+        #  - 7474:7474
+        #  - 7687:7687
+    volumes:
+      - neo4j4vol:/data
+
+volumes:
+  neo4j1vol:
+  neo4j2vol:
+  neo4j3vol:
+  neo4j4vol:
+

@@ -1,0 +1,26 @@
+version: "3.1"
+
+services:
+  neo4j:
+    image: neo4j:3.4.8
+    environment:
+      - NEO4J_AUTH=none
+      - NEO4J_CONF=/conf
+    ports:
+      - 7474:7474
+      - 7687:7687
+    volumes:
+      - ./movies.db:/data/movies.db
+      - ./conf/neo4j.conf:/conf/neo4j.conf:ro
+  # neo4j-day2:
+  #   image: neo4j:3.0.7
+  #   environment:
+  #     - NEO4J_AUTH=none
+  #     - NEO4J_CONF=/conf
+  #   ports:
+  #     - 7474:7474
+  #     - 7687:7687
+  #   volumes:
+  #     - ./movies.db:/data/movies.db
+  #     - ./conf/neo4j.conf:/conf/neo4j.conf:ro
+  #   entrypoint: /bin/bash
