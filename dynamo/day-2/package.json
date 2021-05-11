@@ -11,7 +11,7 @@
   "author": "Spantree LLC",
   "license": "GPLv2",
   "dependencies": {
-    "lodash": "^4.17.13"
+    "lodash": "^4.17.21"
   },
   "devDependencies": {
     "@types/aws-lambda": "8.10.1",
