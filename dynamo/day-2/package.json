@@ -17,7 +17,7 @@
     "@types/aws-lambda": "8.10.1",
     "@types/lodash": "^4.14.118",
     "@types/node": "^10.12.3",
-    "aws-sdk": "^2.351.0",
+    "aws-sdk": "^2.814.0",
     "serverless": "^1.32.0",
     "serverless-pseudo-parameters": "^2.2.0",
     "serverless-webpack": "^5.2.0",
