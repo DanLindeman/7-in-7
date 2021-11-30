@@ -7,36 +7,27 @@ docker-compose up
 ### To validate neo4j is working
 
 ```bash
-curl http://localhost:7474/db/data/
+curl http://localhost:7474/
 ```
 
 output should look like
 
 ```json
 {
-  "extensions" : { },
-  "node" : "http://localhost:7474/db/data/node",
-  "relationship" : "http://localhost:7474/db/data/relationship",
-  "node_index" : "http://localhost:7474/db/data/index/node",
-  "relationship_index" : "http://localhost:7474/db/data/index/relationship",
-  "extensions_info" : "http://localhost:7474/db/data/ext",
-  "relationship_types" : "http://localhost:7474/db/data/relationship/types",
-  "batch" : "http://localhost:7474/db/data/batch",
-  "cypher" : "http://localhost:7474/db/data/cypher",
-  "indexes" : "http://localhost:7474/db/data/schema/index",
-  "constraints" : "http://localhost:7474/db/data/schema/constraint",
-  "transaction" : "http://localhost:7474/db/data/transaction",
-  "node_labels" : "http://localhost:7474/db/data/labels",
-  "neo4j_version" : "3.4.5"
+  "bolt_routing" : "neo4j://localhost:7687",
+  "transaction" : "http://localhost:7474/db/{databaseName}/tx",
+  "bolt_direct" : "bolt://localhost:7687",
+  "neo4j_version" : "4.3.7",
+  "neo4j_edition" : "community"
 }
 ```
 
-Also validate the web ui is working by opening http://localhost:7474/browser in a web browser
+Also validate the web ui is working by opening http://localhost:7474/ in a web browser
 
 ---
 
 ### Day 2 notes
-- Download the movies zip as instructed, and unzip it into the directory `neo4j/movies.db`
+- Unzip the movies DB from cineasts_12k_movies_50k_actors_2.1.6.zip into the directory `/movies.db`
 - There is no need to change the `conf` file when instructed, since we've mounted a local copy
 - We're using the same version as was used in the book to ensure compatibility with the movies dataset in day 2 (3.0.7). 
 

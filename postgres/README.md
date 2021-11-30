@@ -22,7 +22,7 @@ Note that we specify that we are going to exec into the container as the user
 `postgres`
 
 ```bash
-$ docker exec -it -u postgres postgres_postgres_1 bash
+docker exec -it -u postgres postgres_postgres_1 bash
 postgres@df1f4335d665:/$ whoami
 postgres
 ```
